@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { Lato, Playfair_Display } from "next/font/google";
 import ServicesData from "../static/Services";
+import { NextFont } from "next/dist/compiled/@next/font";
 
 /* Fonts */
 const playfairDisplay = Playfair_Display({
@@ -106,12 +107,10 @@ export default function NavbarLayout({
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background =
                           "linear-gradient(to right, #8B0000, #DAA520)";
-                        e.currentTarget.style.WebkitBackgroundClip = "text";
-                        e.currentTarget.style.WebkitTextFillColor = "transparent";
+                      
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = "transparent";
-                        e.currentTarget.style.WebkitTextFillColor = "";
                       }}
                     >
                       {service.title}
