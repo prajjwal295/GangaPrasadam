@@ -1,33 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { Suspense } from "react";
-// Import the Playfair Display font instead
 import { Lato, Playfair_Display } from "next/font/google";
-import { NextFont } from "next/dist/compiled/@next/font";
+import ServicesData from "../static/Services";
 
-// Initialize the font with multiple weights for flexibility
+/* Fonts */
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
-  // Include multiple weights for different use cases
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const lato = Lato({
   subsets: ["latin"],
   display: "swap",
-  weight: ["100", "300", "400", "700", "900"],
-  variable: "--font-lato",
+  weight: ["300", "400", "700"],
 });
 
+/* Nav paths */
 const paths = [
   { name: "Home", path: "/home" },
-  { name: "Discover", path: "/" },
   { name: "About", path: "/about" },
+];
+
+/* Services */
+const servicesList = [
+  { name: "Ganga Aarti", path: "/services/ganga-aarti" },
+  { name: "Vivah Puja", path: "/services/vivah" },
+  { name: "Kundli Matching", path: "/services/kundli" },
+  { name: "Satyanarayan Puja", path: "/services/satyanarayan" },
+  { name: "Navgraha Shanti", path: "/services/navgraha" },
 ];
 
 export default function NavbarLayout({
@@ -35,219 +40,180 @@ export default function NavbarLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openServices, setOpenServices] = useState(false);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setOpenServices(false);
   }, [pathname]);
 
   return (
-    <div className="flex flex-col min-h-screen w-screen h-screen bg-gray-50 relative">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/70 backdrop-blur-lg border-b border-gray-200 z-50 shadow-sm h-16">
-        <div className="relative">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link href="/" className="flex-shrink-0 group">
-              <div className="flex items-center space-x-2">
-                <div className="relative h-12 w-12"></div>
-                {/* Apply the Playfair Display font */}
-                <span
-                  className={`font-extrabold text-2xl tracking-wide ${playfairDisplay.className}`}
-                  style={{
-                    background:
-                      "linear-gradient(to right, #8B0000 0%, #DAA520 30%, #8B4513 60%, #B8860B 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    // textFillColor: "transparent",
-                    filter: "drop-shadow(0px 1px 1px rgba(0,0,0,0.15))",
-                  }}
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* NAVBAR */}
+      <nav className="fixed top-0 left-0 right-0 bg-white/70 backdrop-blur-lg border-b border-gray-200 z-50 h-16">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-full">
+          
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={160}
+              height={48}
+              priority
+              className="h-10 w-auto"
+            />
+          </Link>
+
+          {/* DESKTOP NAV */}
+          <div className="hidden sm:flex items-center space-x-8">
+            
+            {/* Other links */}
+            {paths.map((p) => (
+              <Link
+                key={p.path}
+                href={p.path}
+                className={`${lato.className} text-gray-700 font-medium hover:text-amber-700 transition`}
+              >
+                {p.name}
+              </Link>
+            ))}
+
+            {/* Services Dropdown */}
+            <div className="relative group">
+              <button
+                className={`${lato.className} flex items-center text-gray-700 font-medium`}
+              >
+                Services
+                <svg
+                  className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  Sonoj Arts
-                </span>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div className="absolute left-0 mt-3 w-64 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-300">
+                <div className="bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
+                  {ServicesData.map((service) => (
+                    <Link
+                      key={service.id}
+                      href={`/services/${service.id}`}
+                      className="block px-5 py-3 text-sm text-gray-700 hover:text-transparent transition-all"
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background =
+                          "linear-gradient(to right, #8B0000, #DAA520)";
+                        e.currentTarget.style.WebkitBackgroundClip = "text";
+                        e.currentTarget.style.WebkitTextFillColor = "transparent";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent";
+                        e.currentTarget.style.WebkitTextFillColor = "";
+                      }}
+                    >
+                      {service.title}
+                    </Link>
+                  ))}
+                </div>
               </div>
+            </div>
+
+            
+
+            {/* Contact */}
+            <Link
+              href="/about#contact-section"
+              className="px-4 py-1.5 rounded-md text-white text-sm shadow"
+              style={{
+                background: "linear-gradient(to right, #8B0000, #DAA520)",
+              }}
+            >
+              Contact Us
             </Link>
+          </div>
 
-            {/* Navigation Links */}
-            <div className="hidden sm:flex sm:items-center sm:space-x-8">
-              <div className="sm:flex sm:space-x-6">
-                {paths.map((pathOption) => (
+          {/* MOBILE MENU BUTTON */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="sm:hidden p-2"
+          >
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6h18M3 12h18M3 18h18" />
+            </svg>
+          </button>
+        </div>
+
+        {/* MOBILE MENU */}
+        {isMobileMenuOpen && (
+          <div className="sm:hidden bg-white shadow-md">
+            
+
+            {paths.map((p) => (
+              <Link
+                key={p.path}
+                href={p.path}
+                className="block px-4 py-3 text-gray-700"
+              >
+                {p.name}
+              </Link>
+            ))}
+
+                        {/* Services accordion */}
+            <button
+              onClick={() => setOpenServices(!openServices)}
+              className="w-full flex justify-between items-center px-4 py-3 font-medium"
+            >
+              Services
+              <svg
+                className={`h-4 w-4 transition-transform ${openServices ? "rotate-180" : ""}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {openServices && (
+              <div className="pl-6 pb-2">
+                {ServicesData.map((service) => (
                   <Link
-                    key={pathOption.path}
-                    href={pathOption.path}
-                    className={`group inline-flex ${lato.className} items-center px-3 py-2 text-base font-medium transition-all duration-300 relative`}
+                   key={service.id}
+                      href={`/services/${service.id}`}
+                    className="block py-2 text-sm text-gray-600 hover:text-amber-700"
                   >
-                    {/* Base text that's always visible */}
-                    <span
-                      className={`relative ${
-                        pathname === pathOption.path
-                          ? "text-transparent"
-                          : "text-gray-700 "
-                      } transition-colors duration-300`}
-                    >
-                      {pathOption.name}
-                    </span>
-
-                    {/* Gold gradient text overlay - becomes visible on hover/active */}
-                    <span
-                      className="absolute inset-0 flex items-center"
-                      style={{
-                        background:
-                          "linear-gradient(to right, #8B0000 0%, #DAA520 30%, #8B4513 60%, #B8860B 100%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                        opacity: pathname === pathOption.path ? 1 : 0,
-                        transition: "opacity 0.3s ease-in-out",
-                      }}
-                    >
-                      {pathOption.name}
-                    </span>
-
-                    {/* Animated underline with gold gradient */}
-                    <span
-                      className={`absolute bottom-0 left-0 h-0.5 w-full transform origin-left transition-transform duration-300 ease-out
-                    ${
-                      pathname === pathOption.path
-                        ? "scale-x-100"
-                        : "scale-x-0 group-hover:scale-x-100"
-                    }`}
-                      style={{
-                        background:
-                          "linear-gradient(to right, #8B0000, #DAA520, #8B4513, #B8860B)",
-                      }}
-                    ></span>
+                    {service.title}
                   </Link>
                 ))}
               </div>
+            )}
 
-              {/* Contact Us button */}
-              <a
-                href="/about#contact-section"
-                className="ml-3 px-4 py-1.5 mr-8 rounded-md text-white text-sm font-medium transition-all duration-300 shadow hover:shadow-md"
-                style={{
-                  background: "linear-gradient(to right, #8B0000, #DAA520)",
-                  textShadow: "0px 1px 1px rgba(0,0,0,0.1)",
-                }}
-              >
-                Contact Us
-              </a>
-            </div>
 
-            {/* Mobile menu button */}
-            <div className="sm:hidden">
-              <button
-                type="button"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-teal-600 hover:bg-gray-100 transition-colors duration-200"
-                aria-expanded={isMobileMenuOpen}
-                aria-label="Toggle main menu"
-              >
-                <svg
-                  className={`h-6 w-6 transition-transform duration-200 ${
-                    isMobileMenuOpen ? "rotate-90" : ""
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                </svg>
-              </button>
-            </div>
+            <Link
+              href="/about#contact-section"
+              className="block px-4 py-3 text-white"
+              style={{
+                background: "linear-gradient(to right, #8B0000, #DAA520)",
+              }}
+            >
+              Contact Us
+            </Link>
           </div>
-        </div>
-
-        {/* Mobile menu */}
-        <div
-          className={`sm:hidden transition-all duration-200 ease-in-out relative ${
-            isMobileMenuOpen
-              ? "max-h-64 opacity-100"
-              : "max-h-0 opacity-0 overflow-hidden"
-          }`}
-        >
-          <div className="bg-white/90 shadow-md rounded-b-lg">
-            <div className="pt-2 pb-3 space-y-0.5 relative">
-              {paths.map((pathOption) => (
-                <Link
-                  key={pathOption.path}
-                  href={pathOption.path}
-                  className={`group relative block px-4 py-3 text-base font-medium ${
-                    lato.className
-                  } transition-all duration-200 overflow-hidden
-                    ${pathname === pathOption.path ? "bg-amber-50" : ""}`}
-                >
-                  <span
-                    className={`relative ${
-                      pathname === pathOption.path
-                        ? "text-transparent"
-                        : "text-gray-700 group-hover:text-transparent"
-                    } transition-colors duration-300`}
-                  >
-                    {pathOption.name}
-                  </span>
-
-                  {/* Gold gradient text */}
-                  <span
-                    className="absolute inset-0 flex items-center px-4 py-3"
-                    style={{
-                      background:
-                        "linear-gradient(to right, #8B0000 0%, #DAA520 30%, #8B4513 60%, #B8860B 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                      opacity: pathname === pathOption.path ? 1 : 0,
-                      transition: "opacity 0.3s ease-in-out",
-                    }}
-                  >
-                    {pathOption.name}
-                  </span>
-
-                  {/* Vertical accent line for active item */}
-                  {pathname === pathOption.path && (
-                    <span
-                      className="absolute left-0 top-0 bottom-0 w-1"
-                      style={{
-                        background:
-                          "linear-gradient(to bottom, #8B0000, #DAA520)",
-                      }}
-                    ></span>
-                  )}
-                </Link>
-              ))}
-            </div>
-            {/* Add a contact button to mobile menu */}
-            <div className="px-4 py-3 border-t border-gray-100">
-              <Link
-                href="/about#contact-section"
-                className="block w-full py-2 px-4 rounded text-center transition-all duration-300"
-                style={{
-                  background: "linear-gradient(to right, #8B0000, #DAA520)",
-                  color: "white",
-                }}
-              >
-                Contact Us
-              </Link>
-            </div>
-          </div>
-        </div>
+        )}
       </nav>
-      {/* Main Content */}
-      <Suspense fallback={<div>Loading...</div>}>
-        <main className="flex-1 pt-16 pb-24 relative z-10">{children}</main>
+
+      {/* CONTENT */}
+      <Suspense fallback={<div />}>
+        <main className="pt-16 flex-1">{children}</main>
       </Suspense>
-      {/* Footer */}
-      <Footer playfairDisplay={playfairDisplay} />
+       <Footer playfairDisplay={playfairDisplay} />
     </div>
   );
 }
+
 
 function Footer({ playfairDisplay }: { playfairDisplay: NextFont }) {
   const year = new Date().getFullYear();

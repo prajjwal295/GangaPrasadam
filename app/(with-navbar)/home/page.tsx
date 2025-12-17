@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { Playfair_Display, Lato } from "next/font/google";
 import Image from "next/image";
-
-// Initialize fonts
+import ServicesData from "../../static/Services";
+//Initialize fonts
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
@@ -17,32 +17,6 @@ const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
 });
 
-const categories = [
-  {
-    id: "mirror",
-    name: "Mirrors",
-    image: "/hand-mirror.png",
-    description: "Elegant reflections for your space",
-  },
-  {
-    id: "painting",
-    name: "Paintings",
-    image: "/paint.png",
-    description: "Handcrafted visual expressions",
-  },
-  {
-    id: "nameplate",
-    name: "Nameplates",
-    image: "/signboard.png",
-    description: "Custom identity for your home",
-  },
-  {
-    id: "canvas",
-    name: "Canvases",
-    image: "/canvas.png",
-    description: "Artistic storytelling on fabric",
-  },
-];
 
 export default function HomePage() {
   return (
@@ -91,7 +65,7 @@ export default function HomePage() {
             <h1
               className={`${playfairDisplay.className} text-4xl sm:text-5xl md:text-6xl font-bold leading-tight`}
             >
-              <span className="block">Discover Exquisite</span>
+              <span className="block">Experience Sacred</span>
               <span
                 style={{
                   background:
@@ -101,7 +75,7 @@ export default function HomePage() {
                   backgroundClip: "text",
                 }}
               >
-                Art & Crafts
+                Rituals And Vedic Traditions
               </span>
             </h1>
 
@@ -119,7 +93,7 @@ export default function HomePage() {
                   background: "linear-gradient(to right, #8B0000, #DAA520)",
                 }}
               >
-                Explore Collection
+                Explore Services
               </Link>
 
               <Link
@@ -166,237 +140,207 @@ export default function HomePage() {
       </section>
 
       {/* Categories Section */}
-      <section className="relative py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 space-y-4">
-            <h2
-              className={`${playfairDisplay.className} text-5xl md:text-4xl lg:text-5xl font-bold pb-2`}
+<section id="services" className="py-20 px-4">
+  <div className="max-w-7xl mx-auto">
+    {/* Section Header */}
+    <div className="text-center mb-14">
+      <h2
+        className={`${playfairDisplay.className} text-4xl md:text-5xl font-bold`}
+        style={{
+          background: "linear-gradient(to right, #8B0000, #DAA520)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        Our Sacred Services
+      </h2>
+      <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+        Traditional rituals performed according to Vedic scriptures,
+        ensuring peace, prosperity, and divine blessings.
+      </p>
+    </div>
+
+    {/* Services Grid */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {ServicesData.map((service) => (
+        <div
+          key={service.id}
+          className="bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
+        >
+          {/* Image */}
+          <div className="relative h-56">
+            <Image
+              src={service.image}
+              alt={service.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <div
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{
+                background:
+                  "linear-gradient(to bottom, rgba(139,0,0,0.15), rgba(218,165,32,0.15))",
+              }}
+            />
+          </div>
+
+          {/* Content */}
+          <div className="p-6 flex flex-col">
+            <h3
+              className={`${playfairDisplay.className} text-2xl font-semibold mb-3`}
               style={{
                 background: "linear-gradient(to right, #8B0000, #DAA520)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
               }}
             >
-              Explore by Category
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Each category represents our commitment to quality and
-              craftsmanship. Discover pieces that speak to your soul.
+              {service.title}
+            </h3>
+
+            <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+              {service.description}
             </p>
-            <div
-              className="w-24 h-1 mx-auto"
-              style={{
-                background: "linear-gradient(to right, #8B0000, #DAA520)",
-              }}
-            ></div>
+
+            {/* Price + CTA */}
+            <div className="flex items-center justify-between mt-auto">
+              <span className="text-lg font-semibold text-amber-700">
+                {service.price}
+              </span>
+
+              <Link
+                href={`/services/${service.id}`}
+                className="inline-flex items-center px-5 py-2 rounded-md text-sm font-medium text-white shadow-sm hover:shadow-md transition-all"
+                style={{
+                  background: "linear-gradient(to right, #8B0000, #DAA520)",
+                }}
+              >
+                Check Details
+                <svg
+                  className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </Link>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {categories.map((category) => (
-              <Link
-                key={category.id}
-                href={`/?category=${category.id}`}
-                className="group"
-              >
-                <div className="bg-white rounded-lg overflow-hidden transition-all duration-300 shadow-sm hover:shadow-xl h-full flex flex-col relative">
-                  {/* Category Image */}
-                  <div className="h-48 overflow-hidden relative">
-                    <div className="h-full bg-amber-50 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
-                      <Image
-                        height={112}
-                        width={112}
-                        src={category.image}
-                        alt={category.name}
-                        className="h-28 w-28 object-contain transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-                    {/* Gradient overlay on hover */}
-                    <div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{
-                        background:
-                          "linear-gradient(to bottom, rgba(139,0,0,0.1), rgba(218,165,32,0.1))",
-                      }}
-                    ></div>
-                  </div>
+          {/* Bottom Accent */}
+          <div
+            className="h-1 w-0 group-hover:w-full transition-all duration-300"
+            style={{
+              background: "linear-gradient(to right, #8B0000, #DAA520)",
+            }}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
-                  {/* Category Info */}
-                  <div className="p-6 flex-1 flex flex-col">
-                    <h3
-                      className={`${playfairDisplay.className} text-xl font-semibold mb-2 group-hover:text-transparent bg-clip-text transition-colors duration-300`}
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(to right, #8B0000, #DAA520)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                      }}
-                    >
-                      {category.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm flex-1 mb-4">
-                      {category.description}
-                    </p>
-                    <span className="inline-flex items-center text-sm font-medium">
-                      Browse Collection
-                      <svg
-                        className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        />
-                      </svg>
-                    </span>
-                  </div>
+      {/* Testimonials Section */}
+<section
+  className="py-20 relative bg-[#f9f7f5]"
+  style={{
+    backgroundImage:
+      "radial-gradient(circle at 10% 20%, rgba(139,0,0,0.03) 0%, rgba(218,165,32,0.03) 90%)",
+  }}
+>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12">
+      <h2
+        className={`${playfairDisplay.className} text-3xl md:text-4xl font-bold mb-4`}
+      >
+        Devotee Experiences
+      </h2>
+      <p className="text-gray-600 max-w-2xl mx-auto">
+        Blessed words from devotees who experienced divine peace through our
+        sacred rituals and Vedic ceremonies.
+      </p>
+    </div>
 
-                  {/* Bottom border that expands on hover */}
-                  <div
-                    className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-300"
-                    style={{
-                      background: "linear-gradient(to right, #8B0000, #DAA520)",
-                    }}
-                  ></div>
-                </div>
-              </Link>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Testimonial 1 */}
+      <div className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center mb-4">
+          <div className="flex text-amber-400">
+            {[...Array(5)].map((_, i) => (
+              <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
             ))}
           </div>
         </div>
-      </section>
 
-      {/* Testimonials Section */}
-      <section
-        className="py-20 relative bg-[#f9f7f5]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 10% 20%, rgba(139,0,0,0.03) 0%, rgba(218,165,32,0.03) 90%)",
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2
-              className={`${playfairDisplay.className} text-3xl md:text-4xl font-bold mb-4`}
-            >
-              What Our Clients Say
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              The joy our creations bring to our clients is our greatest reward.
-            </p>
-          </div>
+        <blockquote className="text-gray-700 mb-6 italic">
+          &quot;The Ganga Aarti was performed with such devotion and discipline.
+          Our family felt immense peace and positivity. Truly a divine
+          experience.&quot;
+        </blockquote>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Testimonial 1 */}
-            <div className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center mb-4">
-                {/* Stars */}
-                <div className="flex text-amber-400">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-              <blockquote className="text-gray-700 mb-6 italic">
-                &quot;I ordered a custom nameplate for our new home, and it exceeded
-                all expectations. The attention to detail and craftsmanship is
-                outstanding. It&apos;s now the first thing visitors compliment when
-                they come over!&quot;
-              </blockquote>
-              <div className="flex items-center">
-                <div className="ml-4">
-                  <p
-                    className={`${playfairDisplay.className} font-medium text-gray-900`}
-                  >
-                    Priya Sharma
-                  </p>
-                  <p className="text-sm text-gray-500">Mumbai</p>
-                </div>
-              </div>
-            </div>
+        <p className={`${playfairDisplay.className} font-medium text-gray-900`}>
+          Suresh Mishra
+        </p>
+        <p className="text-sm text-gray-500">Varanasi</p>
+      </div>
 
-            {/* Testimonial 2 */}
-            <div className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center mb-4">
-                {/* Stars */}
-                <div className="flex text-amber-400">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-              <blockquote className="text-gray-700 mb-6 italic">
-                &quot;The hand-painted mirror I purchased is truly a work of art.
-                Every time I look at it, I discover new details to appreciate.
-                It&apos;s become the centerpiece of my living room.&quot;
-              </blockquote>
-              <div className="flex items-center">
-                <div className="ml-4">
-                  <p
-                    className={`${playfairDisplay.className} font-medium text-gray-900`}
-                  >
-                    Rajesh Patel
-                  </p>
-                  <p className="text-sm text-gray-500">Delhi</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Testimonial 3 */}
-            <div className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center mb-4">
-                {/* Stars */}
-                <div className="flex text-amber-400">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-              <blockquote className="text-gray-700 mb-6 italic">
-                &quot;I commissioned a canvas painting for my mother&apos;s birthday. The
-                artist captured exactly what I wanted, and the communication
-                throughout the process was excellent. My mother was moved to
-                tears!&quot;
-              </blockquote>
-              <div className="flex items-center">
-                <div className="ml-4">
-                  <p
-                    className={`${playfairDisplay.className} font-medium text-gray-900`}
-                  >
-                    Anika Gupta
-                  </p>
-                  <p className="text-sm text-gray-500">Bangalore</p>
-                </div>
-              </div>
-            </div>
+      {/* Testimonial 2 */}
+      <div className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center mb-4">
+          <div className="flex text-amber-400">
+            {[...Array(5)].map((_, i) => (
+              <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
           </div>
         </div>
-      </section>
+
+        <blockquote className="text-gray-700 mb-6 italic">
+          &quot;Our Vivah Sanskar was conducted exactly as per Vedic rituals.
+          The pandits explained every mantra beautifully. We are deeply
+          grateful.&quot;
+        </blockquote>
+
+        <p className={`${playfairDisplay.className} font-medium text-gray-900`}>
+          Rohan & Pooja Sharma
+        </p>
+        <p className="text-sm text-gray-500">Jaipur</p>
+      </div>
+
+      {/* Testimonial 3 */}
+      <div className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center mb-4">
+          <div className="flex text-amber-400">
+            {[...Array(5)].map((_, i) => (
+              <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+          </div>
+        </div>
+
+        <blockquote className="text-gray-700 mb-6 italic">
+          &quot;Swastivachan puja brought a noticeable calm and positivity to our
+          home. The chants were powerful and spiritually uplifting.&quot;
+        </blockquote>
+
+        <p className={`${playfairDisplay.className} font-medium text-gray-900`}>
+          Meena Joshi
+        </p>
+        <p className="text-sm text-gray-500">Udaipur</p>
+      </div>
+    </div>
+  </div>
+</section>
+
     </div>
   );
 }
