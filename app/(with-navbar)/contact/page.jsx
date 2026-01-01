@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import ServicesData from "../../static/Services";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../../_lib/firebase";
+//import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+//import { db } from "../../_lib/firebase";
 import { Cormorant_Garamond, Lora } from "next/font/google";
 
 const headingFont = Cormorant_Garamond({
@@ -55,16 +55,16 @@ export default function ContactPage() {
     try {
       setLoading(true);
 
-      await addDoc(collection(db, "queries"), {
-        fullName,
-        email,
-        contact,
-        location,
-        date,
-        services: selectedServices,
-        message,
-        createdAt: serverTimestamp(),
-      });
+    //   await addDoc(collection(db, "queries"), {
+    //     fullName,
+    //     email,
+    //     contact,
+    //     location,
+    //     date,
+    //     services: selectedServices,
+    //     message,
+    //     createdAt: serverTimestamp(),
+    //   });
 
       alert("🙏 Your query has been submitted successfully");
 
