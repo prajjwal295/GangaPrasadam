@@ -97,13 +97,13 @@ export default function NavbarLayout({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div className="absolute left-0 mt-3 w-64 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-300">
+              <div className="absolute left-[-40px] mt-3 w-64 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-300">
                 <div className="bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
                   {ServicesData.map((service) => (
                     <Link
                       key={service.id}
                       href={`/services/${service.id}`}
-                      className="block px-5 py-3 text-sm text-gray-700 hover:text-transparent transition-all"
+                      className="block px-5 py-3 text-sm text-gray-700 transition-all hover:text-white"
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background =
                           "linear-gradient(to right, #8B0000, #DAA520)";
@@ -148,8 +148,6 @@ export default function NavbarLayout({
         {/* MOBILE MENU */}
         {isMobileMenuOpen && (
           <div className="sm:hidden bg-white shadow-md">
-            
-
             {paths.map((p) => (
               <Link
                 key={p.path}
@@ -160,7 +158,7 @@ export default function NavbarLayout({
               </Link>
             ))}
 
-                        {/* Services accordion */}
+            {/* Services accordion */}
             <button
               onClick={() => setOpenServices(!openServices)}
               className="w-full flex justify-between items-center px-4 py-3 font-medium"
@@ -190,9 +188,9 @@ export default function NavbarLayout({
               </div>
             )}
 
-
             <Link
-              href="/about#contact-section"
+              href="/contact"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="block px-4 py-3 text-white"
               style={{
                 background: "linear-gradient(to right, #8B0000, #DAA520)",
