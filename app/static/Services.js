@@ -3,7 +3,7 @@ const ServicesData = [
     id: 1,
     icon: "fas fa-water",
     title: "Ganga Aarti",
-    price: "₹299",
+    price: "Contact for Price",
     image: "/gangaArti.jpg",
     description:
       "Experience the divine Ganga Aarti performed with sacred rituals and pure devotion.",
@@ -14,7 +14,7 @@ const ServicesData = [
     id: 2,
     icon: "fas fa-ring",
     title: "Vivah Sanskar",
-    price: "₹299",
+    price: "Contact for Price",
     image: "/wedding.jpg",
     description:
       "Traditional Vedic marriage ceremonies conducted by experienced pandits.",
@@ -25,7 +25,7 @@ const ServicesData = [
     id: 3,
     icon: "fas fa-fire",
     title: "Aarti for Other Events",
-    price: "₹299",
+    price: "Contact for Price",
     image: "/arti.jpg",
     description:
       "Special aarti rituals performed for religious and auspicious occasions.",
@@ -36,7 +36,7 @@ const ServicesData = [
     id: 4,
     icon: "fas fa-om",
     title: "Swastivachan",
-    price: "₹299",
+    price: "Contact for Price",
     image: "/swastivachan.jpg",
     description:
       "A sacred Vedic chant performed to invoke peace, positivity, and divine blessings.",

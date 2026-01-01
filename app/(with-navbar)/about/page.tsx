@@ -21,7 +21,6 @@ export default function AboutPage() {
     <div className="min-h-screen bg-[#f9f7f5] text-gray-800 relative z-10">
       {/* Background */}
       <div className="absolute inset-0 bg-fixed bg-[url('/subtle-pattern.png')] opacity-5 -z-10" />
-
       {/* HERO */}
       <section className="relative px-6 py-28 overflow-hidden">
         <div className="absolute inset-0 -z-10">
@@ -160,7 +159,7 @@ export default function AboutPage() {
 
           <div className="grid sm:grid-cols-2 gap-6">
             <Link
-              href="https://www.instagram.com/"
+              href="https://www.instagram.com/ganga_prasadam"
               target="_blank"
               className="p-6 bg-white rounded-lg shadow-sm hover:shadow-lg"
             >
@@ -168,7 +167,7 @@ export default function AboutPage() {
             </Link>
 
             <Link
-              href="https://wa.me/919929285047"
+              href="https://wa.me/919451383340"
               target="_blank"
               className="p-6 bg-white rounded-lg shadow-sm hover:shadow-lg"
             >

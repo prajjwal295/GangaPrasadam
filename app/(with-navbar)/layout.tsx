@@ -228,7 +228,7 @@ function Footer({ playfairDisplay }: { playfairDisplay: NextFont }) {
                 <Image
                   fill
                   src="/file.svg"
-                  alt="Sonoj Arts"
+                  alt="Ganga Prasadam"
                   className="object-contain"
                 />
               </div>
@@ -243,13 +243,13 @@ function Footer({ playfairDisplay }: { playfairDisplay: NextFont }) {
                   backgroundClip: "text",
                 }}
               >
-                Sonoj Arts
+                Ganga Prasadam
               </span>
             </Link>
             <p
               className={`text-sm text-gray-600 leading-relaxed max-w-sm ${lato.className}`}
             >
-              Showcasing the beauty and skill of handmade creations.
+              Connecting You to Divine Traditions
             </p>
           </div>
 
@@ -312,20 +312,20 @@ function Footer({ playfairDisplay }: { playfairDisplay: NextFont }) {
               className={`flex flex-col space-y-2 text-sm text-gray-600 ${lato.className}`}
             >
               <a
-                href="mailto:sonoj.arts@gmail.com"
+                href="mailto:gangaprasadam0@gmail.com"
                 className="hover:text-amber-700 transition-colors"
               >
-                sonoj.arts@gmail.com
+               gangaprasadam0@gmail.com
               </a>
               <a
-                href="https://wa.me/9929285047"
+                href="https://wa.me/9451383340"
                 className="hover:text-amber-700 transition-colors"
               >
-                +91 9929285047
+                +91 9451383340
               </a>
               <div className="flex space-x-3 pt-2">
                 <a
-                  href="https://www.instagram.com/rivercrafting?igsh=MXNxNG9ocDhlYzdneg=="
+                  href="https://www.instagram.com/ganga_prasadam"
                   className="p-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-amber-100 hover:text-amber-800 transition-colors"
                 >
                   <svg
@@ -337,7 +337,7 @@ function Footer({ playfairDisplay }: { playfairDisplay: NextFont }) {
                   </svg>
                 </a>
                 <a
-                  href="https://wa.me/9929285047"
+                  href="https://wa.me/9451383340"
                   target="_blank"
                   className="p-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-amber-100 hover:text-amber-800 transition-colors"
                 >
@@ -355,7 +355,7 @@ function Footer({ playfairDisplay }: { playfairDisplay: NextFont }) {
 
         {/* Bottom note */}
         <div className="mt-10 border-t border-gray-200 pt-4 text-center text-sm text-gray-500 font-lato">
-          © {year} Sonoj Arts. All rights reserved.
+          © {year} Ganaga Prasadam. All rights reserved.
         </div>
       </div>
     </footer>
