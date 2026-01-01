@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState, useRef } from "react";
 import { Playfair_Display, Lato } from "next/font/google";
 
 const playfairDisplay = Playfair_Display({
@@ -16,11 +17,33 @@ const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
 });
 
+const galleryImages = [
+  "/hero.jpg",
+  "/hero.jpg",
+  "/hero.jpg",
+  "/hero.jpg",
+  "/hero.jpg",
+];
+
 export default function AboutPage() {
+  const [modalImage, setModalImage] = useState<string | null>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  const scrollGallery = (direction: "left" | "right") => {
+    if (galleryRef.current) {
+      const scrollAmount = 300;
+      galleryRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f9f7f5] text-gray-800 relative z-10">
       {/* Background */}
       <div className="absolute inset-0 bg-fixed bg-[url('/subtle-pattern.png')] opacity-5 -z-10" />
+
       {/* HERO */}
       <section className="relative px-6 py-28 overflow-hidden">
         <div className="absolute inset-0 -z-10">
@@ -59,17 +82,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* STORY */}
+      {/* STORY / ABOUT */}
       <section className="px-6 py-16">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           {/* Image */}
           <div className="relative">
-            <div className="aspect-[4/5] relative rounded-lg overflow-hidden shadow-xl">
+            <div className="aspect-[4/5] relative rounded-lg overflow-hidden shadow-xl border-4 border-[#DAA520]">
               <Image
                 src="/hero.jpg"
                 alt="Vedic Puja"
                 fill
-                className="object-cover"
+                className="object-cover cursor-pointer"
+                onClick={() => setModalImage("/hero.jpg")}
                 priority
               />
             </div>
@@ -121,7 +145,7 @@ export default function AboutPage() {
               ].map(([title, desc]) => (
                 <div
                   key={title}
-                  className="bg-white p-4 rounded-lg shadow-sm"
+                  className="bg-white p-4 rounded-lg shadow-sm border-2 border-[#DAA520]"
                 >
                   <h3
                     className={`${playfairDisplay.className} font-semibold`}
@@ -135,6 +159,55 @@ export default function AboutPage() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+{/* GALLERY */}
+      <section className="py-16 bg-[#fefaf4] relative">
+        <div className="max-w-7xl mx-auto text-center mb-12 px-6">
+          <h2
+            className={`${playfairDisplay.className} text-3xl md:text-4xl font-bold`}
+            style={{
+              background: "linear-gradient(to right, #8B0000, #DAA520)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Our Gallery
+          </h2>
+          <p className={`${lato.className} text-gray-700 max-w-3xl mx-auto mt-4`}>
+            Moments from our sacred rituals, events, and ceremonies.
+          </p>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative px-16">
+          {/* Arrows */}
+
+          {/* Scrollable gallery */}
+          <div
+            ref={galleryRef}
+            className="flex gap-6 overflow-x-scroll py-4 scroll-smooth"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            {galleryImages.map((img, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-72 h-72 relative rounded-lg overflow-hidden shadow-lg border-4 border-[#DAA520] cursor-pointer hover:scale-105 transition-transform"
+                onClick={() => setModalImage(img)}
+              >
+                <Image src={img} alt={`Gallery image ${index + 1}`} fill className="object-cover" />
+              </div>
+            ))}
+          </div>
+
+          <style jsx>{`
+            div::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
         </div>
       </section>
 
@@ -161,7 +234,7 @@ export default function AboutPage() {
             <Link
               href="https://www.instagram.com/ganga_prasadam"
               target="_blank"
-              className="p-6 bg-white rounded-lg shadow-sm hover:shadow-lg"
+              className="p-6 bg-white rounded-lg shadow-sm hover:shadow-lg border-2 border-[#DAA520]"
             >
               📸 Follow on Instagram
             </Link>
@@ -169,7 +242,7 @@ export default function AboutPage() {
             <Link
               href="https://wa.me/919451383340"
               target="_blank"
-              className="p-6 bg-white rounded-lg shadow-sm hover:shadow-lg"
+              className="p-6 bg-white rounded-lg shadow-sm hover:shadow-lg border-2 border-[#DAA520]"
             >
               💬 Chat on WhatsApp
             </Link>
@@ -177,19 +250,23 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* FOOTER QUOTE */}
-      <div className="py-16 text-center">
-        <p
-          className={`${playfairDisplay.className} italic text-lg`}
-          style={{
-            background: "linear-gradient(to right, #8B0000, #DAA520)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
+
+      {/* Modal */}
+      {modalImage && (
+        <div
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+          onClick={() => setModalImage(null)}
         >
-          “May every prayer bring peace, prosperity, and divine blessings.”
-        </p>
-      </div>
+          <div className="relative w-full max-w-3xl h-[80vh]">
+            <Image
+              src={modalImage}
+              alt="Full Image"
+              fill
+              className="object-contain rounded-lg"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

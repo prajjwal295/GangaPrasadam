@@ -19,7 +19,6 @@ const bodyFont = Lora({
 export default function ServiceDetailPage() {
   const params = useParams();
   const serviceId = Number(params.id);
-
   const service = ServicesData.find((s) => s.id === serviceId);
 
   if (!service) {
@@ -32,91 +31,74 @@ export default function ServiceDetailPage() {
 
   return (
     <div className={`min-h-screen bg-[#f9f7f5] ${bodyFont.className}`}>
-      {/* Hero Section */}
-      <div className="relative h-72 md:h-96 overflow-hidden">
+      {/* Hero */}
+      <section className="relative h-[70vh] min-h-[420px] overflow-hidden">
         <Image
           src={service.image}
           alt={service.title}
           fill
-          className="object-cover"
           priority
+          className="object-cover"
         />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
 
-        {/* Text */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10">
-          <h1
-            className={`text-4xl md:text-5xl lg:text-6xl text-white font-bold mb-4 ${headingFont.className}`}
-            style={{ textShadow: "0 4px 12px rgba(0,0,0,0.5)" }}
-          >
-            {service.title}
-          </h1>
-
-          <p className="text-white text-lg max-w-2xl">
-            {service.description}
-          </p>
-        </div>
-      </div>
-
-      {/* Content Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Description */}
-        <div className="bg-white rounded-xl shadow-sm p-8 mb-10">
-          <h2
-            className={`text-2xl md:text-3xl font-semibold mb-4 ${headingFont.className}`}
-            style={{
-              background: "linear-gradient(to right, #8B0000, #DAA520)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            About This Service
-          </h2>
-
-          <p className="text-gray-700 leading-relaxed text-lg">
-            {service.DetailDescription}
-          </p>
-        </div>
-
-        {/* Price & CTA */}
-        <div className="bg-white rounded-xl shadow-md p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <p className="text-sm text-gray-500 uppercase mb-1">Service Price</p>
-            <p
-              className={`text-3xl font-bold ${headingFont.className}`}
-              style={{
-                background: "linear-gradient(to right, #8B0000, #DAA520)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+        <div className="absolute inset-0 flex items-center justify-center px-4 text-center">
+          <div className="max-w-3xl">
+            <h1
+              className={`text-4xl md:text-6xl text-white font-bold mb-6 ${headingFont.className}`}
+              style={{ textShadow: "0 6px 16px rgba(0,0,0,0.6)" }}
             >
-              {service.price}
+              {service.title}
+            </h1>
+
+            <p className="text-white/90 text-lg md:text-xl leading-relaxed">
+              {service.description}
             </p>
           </div>
+        </div>
+      </section>
 
+      {/* Content */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 py-20">
+        <h2
+          className={`text-2xl md:text-3xl font-semibold mb-6 ${headingFont.className}`}
+          style={{
+            background: "linear-gradient(to right, #8B0000, #DAA520)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          About the Ritual
+        </h2>
+
+        <p className="text-gray-700 leading-relaxed text-lg md:text-xl">
+          {service.DetailDescription}
+        </p>
+
+        {/* Divider */}
+        <div className="my-16 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6">
           <Link
-            href="/contact"
-            className="inline-flex items-center justify-center px-8 py-4 rounded-md text-white font-medium shadow-lg hover:shadow-xl transition-all"
-            style={{
-              background: "linear-gradient(to right, #8B0000, #DAA520)",
-            }}
+            href={`/contact?service=${encodeURIComponent(service.title)}`}
+            className="px-8 py-4 rounded-full bg-gradient-to-r from-[#8B0000] to-[#DAA520] text-white font-semibold shadow-lg hover:shadow-xl transition-all text-center"
           >
-            Book This Service
+            Book Service
           </Link>
         </div>
 
-        {/* Back Link */}
-        <div className="mt-10 text-center">
+        {/* Back */}
+        <div className="mt-20 text-center">
           <Link
             href="/#services"
-            className="text-sm text-gray-600 hover:text-gray-900 underline"
+            className="text-sm text-gray-500 hover:text-gray-800 transition"
           >
             ← Back to Services
           </Link>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

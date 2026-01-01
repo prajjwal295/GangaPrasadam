@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import ServicesData from "../../static/Services";
-//import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-//import { db } from "../../_lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../../_lib/firebase";
 import { Cormorant_Garamond, Lora } from "next/font/google";
+import emailjs from "@emailjs/browser";
 
 const headingFont = Cormorant_Garamond({
   subsets: ["latin"],
@@ -30,11 +31,22 @@ export default function ContactPage() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Preselect service from URL
   useEffect(() => {
     if (preselectedService) {
       setSelectedServices([preselectedService]);
     }
   }, [preselectedService]);
+
+  // Init EmailJS
+  useEffect(() => {
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    if (publicKey) {
+      emailjs.init(publicKey);
+    } else {
+      console.error("EmailJS Public Key missing");
+    }
+  }, []);
 
   const toggleService = (service) => {
     setSelectedServices((prev) =>
@@ -45,29 +57,63 @@ export default function ContactPage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (selectedServices.length === 0) {
-      alert("Please select at least one service");
-      return;
-    }
+    e.preventDefault(); // 🔥 VERY IMPORTANT
+    setLoading(true);
 
     try {
-      setLoading(true);
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const adminTemplateId =
+        process.env.NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID;
+      const userTemplateId =
+        process.env.NEXT_PUBLIC_EMAILJS_USER_TEMPLATE_ID;
+      const publicKey =
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    //   await addDoc(collection(db, "queries"), {
-    //     fullName,
-    //     email,
-    //     contact,
-    //     location,
-    //     date,
-    //     services: selectedServices,
-    //     message,
-    //     createdAt: serverTimestamp(),
-    //   });
+      if (!serviceId || !adminTemplateId || !userTemplateId || !publicKey) {
+        throw new Error("EmailJS environment variables missing");
+      }
 
-      alert("🙏 Your query has been submitted successfully");
+      // 1️⃣ Save to Firestore (optional but recommended)
+      await addDoc(collection(db, "queries"), {
+        fullName,
+        email,
+        contact,
+        location,
+        date,
+        services: selectedServices,
+        message,
+        createdAt: serverTimestamp(),
+      });
 
+      // 2️⃣ Email to Admin
+      await emailjs.send(
+        serviceId,
+        adminTemplateId,
+        {
+          fullName,
+          email,
+          contact,
+          location,
+          date,
+          services: selectedServices.join(", "),
+          message,
+        },
+        publicKey
+      );
+
+      // 3️⃣ Email to User
+      await emailjs.send(
+        serviceId,
+        userTemplateId,
+        {
+          fullName,
+          email,
+          services: selectedServices.join(", "),
+        },
+        publicKey
+      );
+
+      alert("Inquiry submitted successfully 🙏");
       setFullName("");
       setEmail("");
       setContact("");
@@ -75,8 +121,9 @@ export default function ContactPage() {
       setDate("");
       setMessage("");
       setSelectedServices([]);
+
     } catch (error) {
-      console.error(error);
+      console.error("Submission error:", error);
       alert("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
@@ -105,100 +152,92 @@ export default function ContactPage() {
           onSubmit={handleSubmit}
           className="bg-white rounded-xl shadow-md p-8 space-y-6"
         >
-          {/* Name, Contact, Email */}
+          {/* Name & Contact */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium mb-1">
-                Full Name <span className="text-red-500">*</span>
+                Full Name *
               </label>
               <input
-                type="text"
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="Enter your full name"
-                className="w-full rounded-md border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#8B0000]/40"
+                className="w-full rounded-md border px-4 py-3"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium mb-1">
-                Contact Number <span className="text-red-500">*</span>
+                Contact Number *
               </label>
               <input
-                type="tel"
                 required
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-                placeholder="+91 XXXXX XXXXX"
-                className="w-full rounded-md border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#8B0000]/40"
+                className="w-full rounded-md border px-4 py-3"
               />
             </div>
+          </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium mb-1">
-                Email Address <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                className="w-full rounded-md border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#8B0000]/40"
-              />
-            </div>
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Email *
+            </label>
+            <input
+              required
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-md border px-4 py-3"
+            />
           </div>
 
           {/* Location */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              Location <span className="text-red-500">*</span>
+              Location *
             </label>
             <input
-              type="text"
               required
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              placeholder="City / Address"
-              className="w-full rounded-md border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#8B0000]/40"
+              className="w-full rounded-md border px-4 py-3"
             />
           </div>
 
           {/* Date */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              Preferred Date <span className="text-red-500">*</span>
+              Preferred Date *
             </label>
             <input
-              type="date"
               required
+              type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-4 py-3 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#8B0000]/40"
+              className="w-full rounded-md border px-4 py-3"
             />
           </div>
 
           {/* Services */}
           <div>
             <label className="block text-sm font-medium mb-3">
-              Select Services <span className="text-red-500">*</span>
+              Select Services *
             </label>
-
             <div className="flex flex-wrap gap-3">
               {ServicesData.map((service) => {
                 const isSelected = selectedServices.includes(service.title);
-
                 return (
                   <button
                     key={service.id}
                     type="button"
                     onClick={() => toggleService(service.title)}
-                    className={`px-4 py-2 rounded-full text-sm border transition-all
+                    className={`px-4 py-2 rounded-full text-sm border transition
                       ${
                         isSelected
-                          ? "bg-gradient-to-r from-[#8B0000] to-[#DAA520] text-white border-transparent shadow"
-                          : "border-gray-300 text-gray-700 hover:border-[#8B0000]"
+                          ? "bg-gradient-to-r from-[#8B0000] to-[#DAA520] text-white"
+                          : "border-gray-300"
                       }`}
                   >
                     {service.title}
@@ -211,14 +250,13 @@ export default function ContactPage() {
           {/* Message */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              Custom Message (Optional)
+              Message (Optional)
             </label>
             <textarea
               rows={4}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Any special request or message"
-              className="w-full rounded-md border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#8B0000]/40"
+              className="w-full rounded-md border px-4 py-3"
             />
           </div>
 
@@ -226,12 +264,12 @@ export default function ContactPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 rounded-md text-white font-medium shadow-lg hover:shadow-xl transition-all disabled:opacity-60"
+            className="w-full py-4 rounded-md text-white font-medium shadow-lg hover:cursor-pointer"
             style={{
               background: "linear-gradient(to right, #8B0000, #DAA520)",
             }}
           >
-            {loading ? "Submitting..." : "Raise Query"}
+            {loading ? "Submitting..." : "Book Now / Submit Query"}
           </button>
         </form>
       </div>
