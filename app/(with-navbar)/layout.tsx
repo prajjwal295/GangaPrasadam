@@ -124,7 +124,7 @@ export default function NavbarLayout({
 
             {/* Contact */}
             <Link
-              href="/about#contact-section"
+              href="/contact"
               className="px-4 py-1.5 rounded-md text-white text-sm shadow"
               style={{
                 background: "linear-gradient(to right, #8B0000, #DAA520)",
