@@ -57,7 +57,7 @@ export default function HomePage() {
                   backgroundClip: "text",
                 }}
               >
-                Handcrafted with Love
+                 Sanatan Seva & Vedic Rituals
               </span>
               <span className="text-amber-700">✦</span>
             </div>
@@ -80,9 +80,8 @@ export default function HomePage() {
             </h1>
 
             <p className="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto md:mx-0">
-              Explore our curated collection of unique artworks and handcrafted
-              pieces. Each creation tells a story and brings a touch of artistry
-              to your space.
+              Book authentic Ganga rituals and spiritual services conducted by experienced pandits.
+              Every ceremony is performed with sincerity, precision, and devotion.
             </p>
 
             <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
